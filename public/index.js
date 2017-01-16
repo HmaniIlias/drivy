@@ -169,3 +169,110 @@ console.log(cars);
 console.log(rentals);
 console.log(actors);
 console.log(rentalModifications);
+
+//Exercice 1:
+function setPriceEx1(){
+  //Initialisation variable
+  var priceFinal;
+  var Ptime;
+  var Pdistance;
+  var priceD;
+  var priceKm;
+
+  //Parcours de rentals
+  for (var i = 0; i < rentals.length; i++) {
+    //Stock Car id
+    var carId = rentals[i].carId;
+    //Récupération des prix de la voiture
+    for (var j = 0; j < cars.length; j++) {
+      if(carId == rentals[j].carId){
+        priceD = cars[j].pricePerDay;
+        priceKm = cars[j].pricePerKm;
+      }
+    }
+    //Récupération du temps
+    var datePickup = new Date(rentals[i].pickupDate);
+    var dateReturn = new Date(rentals[i].returnDate);
+    var days = getDays(datePickup, dateReturn);
+    //Calcul des prix séparer
+    Pdistance = rentals[i].distance * priceKm;
+    Ptime = days * priceD;
+    //Calcul et Assignation du prix final
+    rentals[i].price = Pdistance + Ptime;
+  }
+}
+
+function displayPrice(){
+  for (var i = 0; i < rentals.length; i++) {
+    console.log(rentals[i].price);
+  }
+}
+
+function getDays(date1, date2){
+  //Calcul de la différence de jours
+  var days = Math.abs(datePickup.getDay() - dateReturn.getDay());
+  return days;
+}
+//Exercice 2:
+function setPriceEx2(){
+  //Initialisation variable
+  var priceFinal;
+  var Ptime;
+  var Pdistance;
+  var priceD;
+  var priceKm;
+
+  //Parcours de rentals
+  for (var i = 0; i < rentals.length; i++) {
+    //Stock Car id
+    var carId = rentals[i].carId;
+    //Récupération des prix de la voiture
+    for (var j = 0; j < cars.length; j++) {
+      if(carId == rentals[j].carId){
+        priceD = cars[j].pricePerDay;
+        priceKm = cars[j].pricePerKm;
+      }
+    }
+    //console.log(priceD);
+    //Récupération du temps
+    var datePickup = new Date(rentals[i].pickupDate);
+    var dateReturn = new Date(rentals[i].returnDate);
+    var days = getDays(datePickup, dateReturn);
+    //Calcul des prix séparer
+    Pdistance = rentals[i].distance * priceKm;
+    Ptime = days * priceD;
+    //Calcul et Assignation du prix final
+    if(days > 1 && days <= 4){
+      rentals[i].price = (Pdistance + Ptime) - ((Pdistance + Ptime)*0.1);
+    }
+    else if (days > 4 && days <= 10) {
+      rentals[i].price = (Pdistance + Ptime) - ((Pdistance + Ptime)*0.3);
+    }
+    else if (days > 10) {
+      rentals[i].price = (Pdistance + Ptime) - ((Pdistance + Ptime)* 0.5);
+    }
+    else{
+      rentals[i].price = Pdistance + Ptime;
+    }
+
+  }
+}
+
+//Exercice 3:
+function Exercice3(){
+  for (var i = 0; i < rentals.length; i++) {
+    var com = rentals[i].price - (rentals[i].price * 0.3);
+    //Récupération du temps
+    var datePickup = new Date(rentals[i].pickupDate);
+    var dateReturn = new Date(rentals[i].returnDate);
+    var days = getDays(datePickup, dateReturn);
+    //Application des répartition
+    var insurance = com /2;
+    var assistance = days * 1;
+    var rest = insurance - assistance;
+    //Ajout des prix
+    rentals[i].commission.insurance = insurance;
+    rentals[i].commission.assistance = assistance;
+    rentals[i].commission.drivy = rest;
+  }
+}
