@@ -290,17 +290,112 @@ function Exercice3(){
 
 //Exercice 4
 function Exercice4(){
+  //Initialisation variable
+  var priceFinal;
+  var Ptime;
+  var Pdistance;
+  var priceD;
+  var priceKm;
 
+  //Parcours de rentals
+  for (var i = 0; i < rentals.length; i++) {
+    //Stock Car id
+    var carId = rentals[i].carId;
+    //Stock the deductible
+    var arrayReduction = [];
+    //Récupération des prix de la voiture
+    for (var j = 0; j < cars.length; j++) {
+      if(carId == rentals[j].carId){
+        priceD = cars[j].pricePerDay;
+        priceKm = cars[j].pricePerKm;
+      }
+    }
+    //console.log(priceD);
+    //Récupération du temps
+    var datePickup = new Date(rentals[i].pickupDate);
+    var dateReturn = new Date(rentals[i].returnDate);
+    var days = getDays(datePickup, dateReturn);
+    //Calcul des prix séparer
+    Pdistance = rentals[i].distance * priceKm;
+    Ptime = days * priceD;
+    //Vérification de deductibleReduction
+    var deductible = 0;
+    if(rentals[i].options.deductibleReduction == true){
+      deductible = 4 * days;
+    }
+    //Calcul et Assignation du prix final
+    if(days > 1 && days <= 4){
+      rentals[i].price = (Pdistance + Ptime) - ((Pdistance + Ptime)*0.1) + deductible;
+      console.log("Price = " + rentals[i].price + "\u20AC");
+    }
+    else if (days > 4 && days <= 10) {
+      rentals[i].price = (Pdistance + Ptime) - ((Pdistance + Ptime)*0.3) + deductible;
+      console.log("Price = " + rentals[i].price + "\u20AC");
+    }
+    else if (days > 10) {
+      rentals[i].price = (Pdistance + Ptime) - ((Pdistance + Ptime)* 0.5) + deductible;
+      console.log("Price = " + rentals[i].price + "\u20AC");
+    }
+    else{
+      rentals[i].price = Pdistance + Ptime;
+      console.log("Price = " + rentals[i].price + "\u20AC") + deductible;
+    }
+    arrayReduction[i] = deductible;
+  }
+  return arrayReduction;
 }
+
+//Exercice 5
+function Exercice5(){
+  //Stock Reduction
+  var arrayReduction = [];
+  arrayReduction = Exercice4();
+
+  for (var i = 0; i < rentals.length; i++) {
+    //Test de la bonne location
+    if(rentals[i].id == actors[i].rentalId){
+      //Parcour de l'objet payement contenu dans actors
+      for (var j = 0; j < actors[i].payment.length; j++) {
+        //Debit driver
+        if(actors[i].payment[j].who == "driver" && actors[i].payment[j].type == "debit" ){
+          actors[i].payment[j].amount = rentals[i].price;
+        }
+        //Credit Owner
+        else if (actors[i].payment[j].who == "owner" && actors[i].payment[j].type == "credit"){
+          actors[i].payment[j].amount = rentals[i].price - (rentals[i].price*0.3); //minus com
+        }
+        //Insurance credit
+        else if(actors[i].payment[j].who == "insurance" && actors[i].payment[j].type == "credit"){
+          actors[i].payment[j].amount = rentals[i].commission.insurance;
+        }
+        //Assistance credit
+        else if(actors[i].payment[j].who == "assistance" && actors[i].payment[j].type == "credit"){
+          actors[i].payment[j].amount = rentals[i].commission.assistance;
+        }
+        //Drivy credit
+        else if(actors[i].payment[j].who == "drivy" && actors[i].payment[j].type == "credit"){
+          actors[i].payment[j].amount = rentals[i].commission.drivy; //+ arrayReduction[i]; // plus reductionAssusrance
+        }
+      }
+      //Affichage des acteurs pour UNE reservation
+      console.log(actors[i].payment);
+    }
+  }
+}
+
 /*console.log(cars);
 console.log(rentals);
 console.log(actors);
 console.log(rentalModifications);*/
 
 console.log(rentals);
-console.log("Exercice 1:");
+console.log("\nExercice 1:");
 setPriceEx1();
-console.log("Exercice 2:");
+console.log("\nExercice 2:");
 setPriceEx2();
-console.log("Exercice 3:");
+console.log("\nExercice 3:");
 Exercice3();
+console.log("\nExercice 4:");
+Exercice4();
+console.log("\nExercice 5:");
+Exercice5();
