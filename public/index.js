@@ -165,12 +165,21 @@ var rentalModifications = [{
   'pickupDate': '2015-12-05'
 }];
 
-console.log(cars);
-console.log(rentals);
-console.log(actors);
-console.log(rentalModifications);
-
 //Exercice 1:
+function getDays(date1, date2){
+  //Calcul de la différence de jours
+  var diff =  date2.getTime() - date1.getTime();
+  var divD = 1000*60*60*24;
+  var days = Math.ceil((diff/divD));
+
+  //Test 1 jour
+  var divH = 1000*60*60;
+  if( days == 0){
+    days = 1;
+  }
+  return days;
+}
+
 function setPriceEx1(){
   //Initialisation variable
   var priceFinal;
@@ -199,6 +208,7 @@ function setPriceEx1(){
     Ptime = days * priceD;
     //Calcul et Assignation du prix final
     rentals[i].price = Pdistance + Ptime;
+    console.log("Price = " + rentals[i].price + "\u20AC");
   }
 }
 
@@ -208,11 +218,6 @@ function displayPrice(){
   }
 }
 
-function getDays(date1, date2){
-  //Calcul de la différence de jours
-  var days = Math.abs(datePickup.getDay() - dateReturn.getDay());
-  return days;
-}
 //Exercice 2:
 function setPriceEx2(){
   //Initialisation variable
@@ -244,15 +249,19 @@ function setPriceEx2(){
     //Calcul et Assignation du prix final
     if(days > 1 && days <= 4){
       rentals[i].price = (Pdistance + Ptime) - ((Pdistance + Ptime)*0.1);
+      console.log("Price = " + rentals[i].price + "\u20AC");
     }
     else if (days > 4 && days <= 10) {
       rentals[i].price = (Pdistance + Ptime) - ((Pdistance + Ptime)*0.3);
+      console.log("Price = " + rentals[i].price + "\u20AC");
     }
     else if (days > 10) {
       rentals[i].price = (Pdistance + Ptime) - ((Pdistance + Ptime)* 0.5);
+      console.log("Price = " + rentals[i].price + "\u20AC");
     }
     else{
       rentals[i].price = Pdistance + Ptime;
+      console.log("Price = " + rentals[i].price + "\u20AC");
     }
 
   }
@@ -262,6 +271,7 @@ function setPriceEx2(){
 function Exercice3(){
   for (var i = 0; i < rentals.length; i++) {
     var com = rentals[i].price - (rentals[i].price * 0.3);
+    console.log("Comission =" + com + "\u20AC");
     //Récupération du temps
     var datePickup = new Date(rentals[i].pickupDate);
     var dateReturn = new Date(rentals[i].returnDate);
@@ -269,10 +279,28 @@ function Exercice3(){
     //Application des répartition
     var insurance = com /2;
     var assistance = days * 1;
-    var rest = insurance - assistance;
+    var rest = com - insurance - assistance;
     //Ajout des prix
     rentals[i].commission.insurance = insurance;
     rentals[i].commission.assistance = assistance;
     rentals[i].commission.drivy = rest;
+    console.log(rentals[i].commission);
   }
 }
+
+//Exercice 4
+function Exercice4(){
+
+}
+/*console.log(cars);
+console.log(rentals);
+console.log(actors);
+console.log(rentalModifications);*/
+
+console.log(rentals);
+console.log("Exercice 1:");
+setPriceEx1();
+console.log("Exercice 2:");
+setPriceEx2();
+console.log("Exercice 3:");
+Exercice3();
