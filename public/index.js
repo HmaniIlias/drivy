@@ -383,6 +383,12 @@ function Exercice5(){
   }
 }
 
+//Exercice 6
+function Exercice6(){
+
+}
+
+
 /*console.log(cars);
 console.log(rentals);
 console.log(actors);
