@@ -388,6 +388,11 @@ function Exercice6(){
 
 }
 
+//Nous créront l'interface html pour modifer les dates plus tard
+function ModifyObjectThrowForm(form_element){
+  //Modifier l'objet rentals sur date and distance
+}
+
 
 /*console.log(cars);
 console.log(rentals);
